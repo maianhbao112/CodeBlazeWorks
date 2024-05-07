@@ -1,16 +1,17 @@
-function longestCommonPrefix(strs) {
-  if (strs.length === 0) return "";
-  let prefix = strs[0];
-  for (let i = 1; i < strs.length; i++) {
-    let j = 0;
-    while (
-      j < prefix.length &&
-      j < strs[i].length &&
-      prefix.charAt(j) === strs[i].charAt(j)
-    ) {
-      j++;
+function pathSum(root, sum) {
+  if (!root) return [];
+  const result = [];
+  const path = [];
+  const traverse = (node, sum) => {
+    if (!node) return;
+    path.push(node.val);
+    if (!node.left && !node.right && sum === node.val) {
+      result.push([...path]);
     }
-    prefix = prefix.substring(0, j);
-  }
-  return prefix;
+    traverse(node.left, sum - node.val);
+    traverse(node.right, sum - node.val);
+    path.pop();
+  };
+  traverse(root, sum);
+  return result;
 }
