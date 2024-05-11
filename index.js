@@ -1,19 +1,22 @@
-function LRUCache(capacity) {
-  this.capacity = capacity;
-  this.cache = new Map();
-}
-LRUCache.prototype.get = function (key) {
-  if (!this.cache.has(key)) return -1;
-  const value = this.cache.get(key);
-  this.cache.delete(key);
-  this.cache.set(key, value);
-  return value;
-};
-LRUCache.prototype.put = function (key, value) {
-  if (this.cache.has(key)) this.cache.delete(key);
-  if (this.cache.size === this.capacity) {
-    const firstKey = this.cache.keys().next().value;
-    this.cache.delete(firstKey);
+function mergeKLists(lists) {
+  if (!lists || !lists.length) return null;
+  return mergeLists(lists, 0, lists.length - 1);
+  function mergeLists(lists, start, end) {
+    if (start === end) return lists[start];
+    const mid = Math.floor((start + end) / 2);
+    const left = mergeLists(lists, start, mid);
+    const right = mergeLists(lists, mid + 1, end);
+    return mergeTwoLists(left, right);
   }
-  this.cache.set(key, value);
-};
+  function mergeTwoLists(l1, l2) {
+    if (!l1) return l2;
+    if (!l2) return l1;
+    if (l1.val < l2.val) {
+      l1.next = mergeTwoLists(l1.next, l2);
+      return l1;
+    } else {
+      l2.next = mergeTwoLists(l1, l2.next);
+      return l2;
+    }
+  }
+}
